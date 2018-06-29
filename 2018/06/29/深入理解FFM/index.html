@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景  FM (Factorization Machine)  FFM (Field-aware Factorization Machines)   背景在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 $$ \phi(x)">
+<meta name="description" content="背景 FM (Factorization Machine) FFM (Field-aware Factorization Machines)  背景 在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 \[ \">
 <meta name="keywords" content="machine learning,notes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解FFM">
 <meta property="og:url" content="http://yoursite.com/2018/06/29/深入理解FFM/index.html">
 <meta property="og:site_name" content="机器学习笔记">
-<meta property="og:description" content="背景  FM (Factorization Machine)  FFM (Field-aware Factorization Machines)   背景在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 $$ \phi(x)">
+<meta property="og:description" content="背景 FM (Factorization Machine) FFM (Field-aware Factorization Machines)  背景 在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 \[ \">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-29T15:45:46.149Z">
+<meta property="og:updated_time" content="2018-06-29T16:59:43.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解FFM">
-<meta name="twitter:description" content="背景  FM (Factorization Machine)  FFM (Field-aware Factorization Machines)   背景在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 $$ \phi(x)">
+<meta name="twitter:description" content="背景 FM (Factorization Machine) FFM (Field-aware Factorization Machines)  背景 在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。 \[ \">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>深入理解FFM | 机器学习笔记</title>
+  <title>深入理解FFM | 机器学习笔记</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -145,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -302,70 +302,112 @@
       
         <hr>
 <ul>
-<li><p>背景</p>
-</li>
-<li><p>FM (Factorization Machine)</p>
-</li>
-<li><p>FFM (Field-aware Factorization Machines)</p>
-</li>
+<li><p>背景</p></li>
+<li><p>FM (Factorization Machine)</p></li>
+<li><p>FFM (Field-aware Factorization Machines)</p></li>
 </ul>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。</p>
-<p>$$ \phi(x) =  \sum_{i}^{n}\sum_{j=i+1}^n w_{ij} x_i x_j$$(1)</p>
+<h2 id="背景">背景</h2>
+<p>在CTR（点击率预测）模型构建过程中，某些特征的组合可以提高与标签的相关性，如“春节”和“中国人”结合起来之后，对用户的点击有相当正面的影响。最简单的特征组合模型可以表示成如下的多项式模型(以二阶为例,且只保留二次项)。</p>
+<p><span class="math display">\[ \phi(x) =  \sum_{i}^{n}\sum_{j=i+1}^n w_{ij} x_i x_j \tag{1}\]</span></p>
 <p>其中，n为特征数量。</p>
-<p>然而这种模型难以处理实际问题。我们知道，在实际应用中，用来表达类别的one-hot编码非常普遍，这种情况造成了特征的稀疏性。多项式模型中特征组合的系数$w_{ij}$的数量是$\frac{n(n-1)}{2}$，且相互独立，计算$\phi(x)$的时间复杂度为$O(n^2)$；$w_{ij}$的训练需要$x_i$和$x_j$同时非零，相当于将特征组合视为一个新的特征，而矩阵的稀疏性决定了对应的样本很少，这时训练出来的$w_{ij}$准确性不够。[1]中给了一个简单形象的例子来说明这个问题。</p>
+<p>然而这种模型难以处理实际问题。我们知道，在实际应用中，用来表达类别的one-hot编码非常普遍，这种情况造成了特征的稀疏性。多项式模型中特征组合的系数<span class="math inline">\(w_{ij}\)</span>的数量是<span class="math inline">\(\frac{n(n-1)}{2}\)</span>，且相互独立，计算<span class="math inline">\(\phi(x)\)</span>的时间复杂度为<span class="math inline">\(O(n^2)\)</span>；<span class="math inline">\(w_{ij}\)</span>的训练需要<span class="math inline">\(x_i\)</span>和<span class="math inline">\(x_j\)</span>同时非零，相当于将特征组合视为一个新的特征，而矩阵的稀疏性决定了对应的样本很少，这时训练出来的<span class="math inline">\(w_{ij}\)</span>准确性不够。[1]中给了一个简单形象的例子来说明这个问题。</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">Label</th>
-<th style="text-align:center">Publisher</th>
-<th style="text-align:center">Advertiser</th>
+<tr class="header">
+<th align="center">Label</th>
+<th align="center">Publisher</th>
+<th align="center">Advertiser</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center"></td>
+<tr class="odd">
+<td align="center">+80 -20</td>
+<td align="center">ESPN</td>
+<td align="center">Nike</td>
+</tr>
+<tr class="even">
+<td align="center">+10 -90</td>
+<td align="center">ESPN</td>
+<td align="center">Gucci</td>
+</tr>
+<tr class="odd">
+<td align="center">+0 -1</td>
+<td align="center">ESPN</td>
+<td align="center">Adidas</td>
+</tr>
+<tr class="even">
+<td align="center">+15 -85</td>
+<td align="center">Vogue</td>
+<td align="center">Nike</td>
+</tr>
+<tr class="odd">
+<td align="center">+90 -10</td>
+<td align="center">Vogue</td>
+<td align="center">Gucci</td>
+</tr>
+<tr class="even">
+<td align="center">+10 -90</td>
+<td align="center">Vogue</td>
+<td align="center">Adidas</td>
+</tr>
+<tr class="odd">
+<td align="center">+85 -15</td>
+<td align="center">NBC</td>
+<td align="center">Nike</td>
+</tr>
+<tr class="even">
+<td align="center">+0 -0</td>
+<td align="center">NBC</td>
+<td align="center">Gucci</td>
+</tr>
+<tr class="odd">
+<td align="center">+90 -10</td>
+<td align="center">NBC</td>
+<td align="center">Adidas</td>
 </tr>
 </tbody>
 </table>
-<p>+80 -20 | ESPN | Nike<br>+10 -90 | ESPN | Gucci<br>+0   -1 | ESPN | Adidas<br>+15 -85 | Vogue| Nike<br>+90 -10 | Vogue| Gucci<br>+10 -90 | Vogue| Adidas<br>+85 -15 | NBC  | Nike<br>+0 -0   | NBC  | Gucci<br>+90 -10 | NBC  | Adidas</p>
-<p>上表是一个人工的CTR数据集，表示广告商 (Advertiser) 在广告平台 (Publisher)上投放广告的点击情况，其中Label中的+(-)号表示点击数(未点击数)。如果使用多项式模型，对特征组合 (ESPN,Adidas) 来说，数据集中只有一个样本，此时对应的$w_{(ESPN,Adidas)}$将难以训练准确。更特别地，对于特征组合 (NBC,Gucci),由于样本数为0，对应的权系数$w_{(NBC,Gucci)}$甚至无法训练。</p>
-<h2 id="FM-Factorization-Machine"><a href="#FM-Factorization-Machine" class="headerlink" title="FM (Factorization Machine)"></a>FM (Factorization Machine)</h2><p>这个问题可以用矩阵分解 (Factorization) 的方法解决。假设特征组合的系数矩阵为$W_{ij}=w_{ij}$,可以将矩阵分解成$W=V^TV$,其中$V \subset R^{n\times k}$,$v_i$为特征$x_i$的隐向量，长度为$k$。这时公式（1）可以写成</p>
-<p>$$\phi(x) = \sum_{i}^{n} \sum_{j=i+1}^n &lt;v_i,v_j&gt; x_i x_j$$(2)</p>
-<p>这样，我们就有充足的样本训练每一个特征$x_i$对应的隐向量$v_{i}$，而不必处理特征组合的样本问题。现在，上述问题可以得到解决：特征组合 (ESPN,Adidas) 的预测由$&lt;v_{ESPN},v_{Adidas}&gt;$决定，而$v_{ESPN}$和$v_{Adidas}$可以分别通过其他特征组合 (如 (ESPN,Nike), (NBC,Adidas) )的样本训练得到；对特征组合 (NBC,Gucci) 的预测也是如此。</p>
-<p>另外，此时模型的参数个数为$n\times k$，计算$\phi(x)$的时间复杂度为$O(n^2k)$。上式还可以写成</p>
-<p>$$\phi(x)=\frac{1}{2} \sum_{i=1}^{n}(s-v_ix_i)\cdot v_ix_i$$(3)</p>
-<p>其中，$s=\sum_{j=1}^{n}v_jx_j$。这时计算复杂度被减小到$O(nk)$。由于$k&lt;&lt;n$，可以看出，此时计算效率要优于多项式模型。</p>
+<p>上表是一个人工的CTR数据集，表示广告商 (Advertiser) 在广告平台 (Publisher)上投放广告的点击情况，其中Label中的+(-)号表示点击数(未点击数)。如果使用多项式模型，对特征组合 (ESPN,Adidas) 来说，数据集中只有一个样本，此时对应的<span class="math inline">\(w_{(ESPN,Adidas)}\)</span>将难以训练准确。更特别地，对于特征组合 (NBC,Gucci),由于样本数为0，对应的权系数<span class="math inline">\(w_{(NBC,Gucci)}\)</span>甚至无法训练。</p>
+<h2 id="fm-factorization-machine">FM (Factorization Machine)</h2>
+<p>这个问题可以用矩阵分解 (Factorization) 的方法解决。假设特征组合的系数矩阵为<span class="math inline">\(W_{ij}=w_{ij}\)</span>,可以将矩阵分解成<span class="math inline">\(W=V^TV\)</span>,其中<span class="math inline">\(V \subset R^{n\times k}\)</span>,<span class="math inline">\(v_i\)</span>为特征<span class="math inline">\(x_i\)</span>的隐向量，长度为<span class="math inline">\(k\)</span>。这时公式（1）可以写成</p>
+<p><span class="math display">\[\phi(x) = \sum_{i}^{n} \sum_{j=i+1}^n &lt;v_i,v_j&gt; x_i x_j \tag{2}\]</span></p>
+<p>这样，我们就有充足的样本训练每一个特征<span class="math inline">\(x_i\)</span>对应的隐向量<span class="math inline">\(v_{i}\)</span>，而不必处理特征组合的样本问题。现在，上述问题可以得到解决：特征组合 (ESPN,Adidas) 的预测由<span class="math inline">\(&lt;v_{ESPN},v_{Adidas}&gt;\)</span>决定，而<span class="math inline">\(v_{ESPN}\)</span>和<span class="math inline">\(v_{Adidas}\)</span>可以分别通过其他特征组合 (如 (ESPN,Nike), (NBC,Adidas) )的样本训练得到；对特征组合 (NBC,Gucci) 的预测也是如此。</p>
+<p>另外，此时模型的参数个数为<span class="math inline">\(n\times k\)</span>，计算<span class="math inline">\(\phi(x)\)</span>的时间复杂度为<span class="math inline">\(O(n^2k)\)</span>。上式还可以写成</p>
+<p><span class="math display">\[\phi(x)=\frac{1}{2} \sum_{i=1}^{n}(s-v_ix_i)\cdot v_ix_i \tag{3}\]</span></p>
+<p>其中，<span class="math inline">\(s=\sum_{j=1}^{n}v_jx_j\)</span>。这时计算复杂度被减小到<span class="math inline">\(O(nk)\)</span>。由于<span class="math inline">\(k&lt;&lt;n\)</span>，可以看出，此时计算效率要优于多项式模型。</p>
 <p>这种模型被称为Factorization Machine (FM)。</p>
-<h2 id="FFM-Field-aware-Factorization-Machine"><a href="#FFM-Field-aware-Factorization-Machine" class="headerlink" title="FFM (Field-aware Factorization Machine)"></a>FFM (Field-aware Factorization Machine)</h2><p>FM模型解决了多项式模型中特征组合系数训练的问题。但是，在FM模型中，每一个特征$x_i$只有一个隐向量$v_i$，对不同类别的特征只能用同一个$v_i$来预测，这是不合适的。例如，“中国人”和“春节”这两个特征的相关性，与“中国人”和“性别”的相关性明显是不同的。</p>
-<p>Yu-Chin Juan及其队员在一项比赛中提出了FM的升级版FFM (Field-aware Factorization Machine) [2]。FFM在FM的基础上引入了Field的概念，把相同性质的特征归于同一个field。以上面的CTR数据集为例，Adidas,Nike和Gucci都是广告商，同属于一个Field ；ESPN,NBC和Vogue都是广告平台，同属于另一个Field。在FFM中，每一个特征$x_i$，对其他特征$x_j$所属的Field $f_j$，都会学习一个隐向量$v_{i,f_j}$。这时的隐向量不仅与自身特征相关，还与Field相关。</p>
+<h2 id="ffm-field-aware-factorization-machine">FFM (Field-aware Factorization Machine)</h2>
+<p>FM模型解决了多项式模型中特征组合系数训练的问题。但是，在FM模型中，每一个特征<span class="math inline">\(x_i\)</span>只有一个隐向量<span class="math inline">\(v_i\)</span>，对不同类别的特征只能用同一个<span class="math inline">\(v_i\)</span>来预测，这是不合适的。例如，“中国人”和“春节”这两个特征的相关性，与“中国人”和“性别”的相关性明显是不同的。</p>
+<p>Yu-Chin Juan及其队员在一项比赛中提出了FM的升级版FFM (Field-aware Factorization Machine) [2]。FFM在FM的基础上引入了Field的概念，把相同性质的特征归于同一个field。以上面的CTR数据集为例，Adidas,Nike和Gucci都是广告商，同属于一个Field ；ESPN,NBC和Vogue都是广告平台，同属于另一个Field。在FFM中，每一个特征<span class="math inline">\(x_i\)</span>，对其他特征<span class="math inline">\(x_j\)</span>所属的Field <span class="math inline">\(f_j\)</span>，都会学习一个隐向量<span class="math inline">\(v_{i,f_j}\)</span>。这时的隐向量不仅与自身特征相关，还与Field相关。</p>
 <p>FFM模型可以通过下式表达：</p>
-<p>$$\phi(x) =  \sum_{i}^{n} \sum_{j=i+1}^n &lt;v_{i,f_j},v_{j,f_i}&gt; x_i x_j$$(4)</p>
+<p><span class="math display">\[\phi(x) =  \sum_{i}^{n} \sum_{j=i+1}^n &lt;v_{i,f_j},v_{j,f_i}&gt; x_i x_j \tag{4}\]</span></p>
 <p>为了说明这个表达式，我们用如下的样本举例</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">Clicked</th>
-<th style="text-align:center">Publisher(P)</th>
-<th style="text-align:center">Advertiser(A)</th>
-<th style="text-align:center">Gender(G)</th>
+<tr class="header">
+<th align="center">Clicked</th>
+<th align="center">Publisher(P)</th>
+<th align="center">Advertiser(A)</th>
+<th align="center">Gender(G)</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center"></td>
+<tr class="odd">
+<td align="center">Yes</td>
+<td align="center">ESPN</td>
+<td align="center">Nike</td>
+<td align="center">Male</td>
 </tr>
 </tbody>
 </table>
-<p>Yes | ESPN | Nike | Male |</p>
-<p>在FFM中，“ESPN”这个特征在与“Nike”特征相关联的时候，会使用与field “A”有关的隐向量；在与“Male”特征进行关联的时候，会使用与field “G”有关的隐向量，以此类推。此时</p>
-<p>$$\phi(x)=v_{ESPN,A} \cdot v_{Nike,P} + v_{ESPN,G} \cdot v_{Male,P} + v_{Nkie,G} \cdot v_{Male,A}$$(5)</p>
-<p>在FFM中，假设共有$f$个field，每个隐向量的长度$k$，则参数的个数为$nfk$，计算$\phi(x)$的复杂度为$O(n^2k)$。但是，由于FFM中的隐向量表征的是特征与field的关联性，而不是特征与特征的关联性，通常$k_{FFM}&lt;&lt;k_{FM}$。</p>
+<p>在FFM中，“ESPN”这个特征在与“Nike”特征相关联的时候，会使用与field &quot;A&quot;有关的隐向量；在与“Male”特征进行关联的时候，会使用与field &quot;G&quot;有关的隐向量，以此类推。此时</p>
+<p><span class="math display">\[\phi(x)=v_{ESPN,A} \cdot v_{Nike,P} + v_{ESPN,G} \cdot v_{Male,P} + v_{Nkie,G} \cdot v_{Male,A} \tag{5}\]</span></p>
+<p>在FFM中，假设共有<span class="math inline">\(f\)</span>个field，每个隐向量的长度<span class="math inline">\(k\)</span>，则参数的个数为<span class="math inline">\(nfk\)</span>，计算<span class="math inline">\(\phi(x)\)</span>的复杂度为<span class="math inline">\(O(n^2k)\)</span>。但是，由于FFM中的隐向量表征的是特征与field的关联性，而不是特征与特征的关联性，通常<span class="math inline">\(k_{FFM}&lt;&lt;k_{FM}\)</span>。</p>
 <p>Yu-Chin Juan团队实现了多个版本的FFM模型，包括上述只有二次项的模型，包含常数项、一次项和L2正则项的模型，以及用于回归的模型，具体可见<a href="https://www.csie.ntu.edu.tw/~r01922136/libffm/" title="libffm source" target="_blank" rel="noopener">这里</a>。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><p>[1] Juan, Yuchin, et al. <a href="http://xueshu.baidu.com/s?wd=paperuri%3A%28a5b2d2b3e4393e7209fb93881f9b7cab%29&amp;filter=sc_long_sign&amp;tn=SE_xueshusource_2kduw22v&amp;sc_vurl=http%3A%2F%2Fdl.acm.org%2Fcitation.cfm%3Fid%3D2959134&amp;ie=utf-8&amp;sc_us=11461374915782083504" title="ffm paper" target="_blank" rel="noopener">“Field-aware Factorization Machines for CTR Prediction.”</a> ACM Conference on Recommender Systems ACM, 2016:43-50.</p>
-</li>
-<li><p>[2] 美团技术团队.<a href="https://tech.meituan.com/deep-understanding-of-ffm-principles-and-practices.html" title="美团ffm文章" target="_blank" rel="noopener">深入FFM原理与实践</a>.2016.</p>
-</li>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><p>[1] Juan, Yuchin, et al. <a href="http://xueshu.baidu.com/s?wd=paperuri%3A%28a5b2d2b3e4393e7209fb93881f9b7cab%29&amp;filter=sc_long_sign&amp;tn=SE_xueshusource_2kduw22v&amp;sc_vurl=http%3A%2F%2Fdl.acm.org%2Fcitation.cfm%3Fid%3D2959134&amp;ie=utf-8&amp;sc_us=11461374915782083504" title="ffm paper" target="_blank" rel="noopener">&quot;Field-aware Factorization Machines for CTR Prediction.&quot;</a> ACM Conference on Recommender Systems ACM, 2016:43-50.</p></li>
+<li><p>[2] 美团技术团队.<a href="https://tech.meituan.com/deep-understanding-of-ffm-principles-and-practices.html" title="美团ffm文章" target="_blank" rel="noopener">深入FFM原理与实践</a>.2016.</p></li>
 </ul>
 
       
@@ -514,7 +556,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FM-Factorization-Machine"><span class="nav-number">2.</span> <span class="nav-text">FM (Factorization Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FFM-Field-aware-Factorization-Machine"><span class="nav-number">3.</span> <span class="nav-text">FFM (Field-aware Factorization Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fm-factorization-machine"><span class="nav-number">2.</span> <span class="nav-text">FM (Factorization Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffm-field-aware-factorization-machine"><span class="nav-number">3.</span> <span class="nav-text">FFM (Field-aware Factorization Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
@@ -714,6 +756,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
 
   
 
